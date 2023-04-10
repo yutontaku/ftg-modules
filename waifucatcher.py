@@ -8,16 +8,16 @@ def register(cb):
 class WaifuCatcherMod(loader.Module):
     """Module for WaifuCatcher autoplay"""
     def __init__(self):
-        self.enabled = True
+        self.catch = True
         self.day = False
     strings = {"name": "WaifuCatcher"}
     async def catchcmd(self, message):
         '''disable/enable autoplay'''
-        self.enabled = not self.enabled
-        await message.edit('Autoplay mode is turned on' if self.enabled else 'Autoplay mode is turned off')
+        self.catch = not self.catch
+        await message.edit('Autoplay mode is turned on' if self.catch else 'Autoplay mode is turned off')
     @loader.watcher('in', from_id=1976201765)
     async def play(self, message):
-        if self.enabled:
+        if self.catch:
             if "Hey! You reached the maximum amount of 🎟" in message.text:
                 await message.client.send_message(1976201765, '/start')
                 await message.client.send_message(1976201765, 'PLAY NOW! 🎟')
@@ -37,3 +37,24 @@ class WaifuCatcherMod(loader.Module):
         	await sleep(5)
         	await message.client.send_message(1976201765, "Back 🔙")
         	await sleep(86400)
+    async def achievementscmd(self, message):
+        '''Auto-claim your achievements'''
+        await message.edit('Claiming achivements')
+        await message.client.send_message(1976201765, "/start")
+        await sleep(5)
+        await message.client.send_message(1976201765, "Rewards 🎁")
+        await sleep(7)
+        await message.client.send_message(1976201765, "Achievements 🏆")
+    @loader.watcher('in', from_id=1976201765)
+    async def achives(self, message):
+    	if 'Achievements' in message.text:
+            try:
+                id = message.id
+                msg = await message.client.get_messages(entity=1976201765, max_id=id + 1, min_id=id - 1)
+                while msg[0].buttons:
+                    try:
+                        await msg[0].click(0)
+                    except Exception:
+                        break
+            except Exception:
+                pass
