@@ -20,8 +20,11 @@ class WaifuCatcherMod(loader.Module):
         if self.catch:
             if "Hey! You reached the maximum amount of 🎟" in message.text:
                 await message.client.send_message(1976201765, '/start')
+                await sleep(5)
                 await message.client.send_message(1976201765, 'PLAY NOW! 🎟')
+                await sleep(10)
                 await message.client.send_message(1976201765, 'Play 1000🎟')
+                await sleep(10)
             elif "Click below to activate autoplay👇" in message.text:
                 await message.click(0)
     async def daycmd(self, message):
